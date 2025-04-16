@@ -58,7 +58,7 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
     private static final Set<String> ACCEPTABLE_PERIODS = new HashSet<>(
         Arrays.asList("202501", "202502")
     );
-    private static final String BASE_DIRECTORY = "/apps/todo/";
+    private static final String BASE_DIRECTORY = "/Users/nvbinhsoft/Documents";
 
     // Backend service configuration
     private static final String BACKEND_SERVICE_URL = "http://backend-service.example.com/upload";
@@ -254,7 +254,7 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
      * Saves the file to the appropriate directory
      */
     private String saveFile(String fileName, File file, String yearMonth) throws IOException {
-        String dirPath = BASE_DIRECTORY + yearMonth;
+        String dirPath = BASE_DIRECTORY + "/" +yearMonth;
         File directory = new File(dirPath);
 
         if (!directory.exists()) {
