@@ -5,13 +5,7 @@
 
 package com.example.todo.service;
 
-import com.example.todo.exception.FileNameFormatException;
-import com.example.todo.exception.FileSizeExceededException;
-import com.example.todo.exception.InvalidFileNameException;
-import com.example.todo.exception.InvalidProcessingPeriodException;
 import com.liferay.portal.kernel.service.ServiceWrapper;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Provides a wrapper for {@link TodoItemService}.
@@ -42,9 +36,15 @@ public class TodoItemServiceWrapper
 	}
 
 	@Override
-	public String validateAndSaveFile(String fileName, File file)
-			throws FileSizeExceededException, FileNameFormatException, InvalidFileNameException, InvalidProcessingPeriodException, IOException {
-		return "";
+	public String validateAndSaveFile(String fileName, java.io.File file)
+		throws com.example.todo.exception.FileNameFormatException,
+			   com.example.todo.exception.FileSizeExceededException,
+			   com.example.todo.exception.InvalidFileNameException,
+			   com.example.todo.exception.InvalidProcessingPeriodException,
+			   com.example.todo.exception.ServiceUnavailableException,
+			   java.io.IOException {
+
+		return _todoItemService.validateAndSaveFile(fileName, file);
 	}
 
 	@Override

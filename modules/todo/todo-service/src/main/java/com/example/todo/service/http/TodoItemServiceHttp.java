@@ -5,13 +5,22 @@
 
 package com.example.todo.service.http;
 
+import com.example.todo.service.TodoItemServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+
 /**
  * Provides the HTTP utility for the
- * <code>com.example.todo.service.TodoItemServiceUtil</code> service
+ * <code>TodoItemServiceUtil</code> service
  * utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * <code>com.liferay.portal.kernel.security.auth.HttpPrincipal</code> parameter.
+ * <code>HttpPrincipal</code> parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -32,4 +41,89 @@ package com.example.todo.service.http;
  * @generated
  */
 public class TodoItemServiceHttp {
+
+	public static String validateAndSaveFile(
+			HttpPrincipal httpPrincipal, String fileName, java.io.File file)
+		throws com.example.todo.exception.FileNameFormatException,
+			   com.example.todo.exception.FileSizeExceededException,
+			   com.example.todo.exception.InvalidFileNameException,
+			   com.example.todo.exception.InvalidProcessingPeriodException,
+			   com.example.todo.exception.ServiceUnavailableException,
+			   java.io.IOException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "validateAndSaveFile",
+				_validateAndSaveFileParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, fileName, file);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.example.todo.exception.FileSizeExceededException) {
+
+					throw (com.example.todo.exception.FileSizeExceededException)
+						exception;
+				}
+
+				if (exception instanceof
+						com.example.todo.exception.FileNameFormatException) {
+
+					throw (com.example.todo.exception.FileNameFormatException)
+						exception;
+				}
+
+				if (exception instanceof
+						com.example.todo.exception.InvalidFileNameException) {
+
+					throw (com.example.todo.exception.InvalidFileNameException)
+						exception;
+				}
+
+				if (exception instanceof
+						com.example.todo.exception.
+							InvalidProcessingPeriodException) {
+
+					throw (com.example.todo.exception.
+						InvalidProcessingPeriodException)exception;
+				}
+
+				if (exception instanceof java.io.IOException) {
+					throw (java.io.IOException)exception;
+				}
+
+				if (exception instanceof
+						com.example.todo.exception.
+							ServiceUnavailableException) {
+
+					throw (com.example.todo.exception.
+						ServiceUnavailableException)exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (String)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(TodoItemServiceHttp.class);
+
+	private static final Class<?>[] _validateAndSaveFileParameterTypes0 =
+		new Class[] {String.class, java.io.File.class};
+
 }

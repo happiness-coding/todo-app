@@ -36,6 +36,17 @@ public class TodoItemServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static String validateAndSaveFile(String fileName, java.io.File file)
+		throws com.example.todo.exception.FileNameFormatException,
+			   com.example.todo.exception.FileSizeExceededException,
+			   com.example.todo.exception.InvalidFileNameException,
+			   com.example.todo.exception.InvalidProcessingPeriodException,
+			   com.example.todo.exception.ServiceUnavailableException,
+			   java.io.IOException {
+
+		return getService().validateAndSaveFile(fileName, file);
+	}
+
 	public static TodoItemService getService() {
 		return _serviceSnapshot.get();
 	}
