@@ -9,6 +9,7 @@ import com.example.todo.exception.FileNameFormatException;
 import com.example.todo.exception.FileSizeExceededException;
 import com.example.todo.exception.InvalidFileNameException;
 import com.example.todo.exception.InvalidProcessingPeriodException;
+import com.example.todo.exception.ServiceUnavailableException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -53,7 +54,7 @@ public interface TodoItemService extends BaseService {
 	public String getOSGiServiceIdentifier();
 
 	String validateAndSaveFile(String fileName, File file)
-			throws FileSizeExceededException, FileNameFormatException,
-			InvalidFileNameException, InvalidProcessingPeriodException, IOException;
+            throws FileSizeExceededException, FileNameFormatException,
+            InvalidFileNameException, InvalidProcessingPeriodException, IOException, ServiceUnavailableException;
 
 }
