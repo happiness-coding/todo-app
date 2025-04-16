@@ -5,7 +5,13 @@
 
 package com.example.todo.service;
 
+import com.example.todo.exception.FileNameFormatException;
+import com.example.todo.exception.FileSizeExceededException;
+import com.example.todo.exception.InvalidFileNameException;
+import com.example.todo.exception.InvalidProcessingPeriodException;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Provides a wrapper for {@link TodoItemService}.
@@ -33,6 +39,12 @@ public class TodoItemServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _todoItemService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public String validateAndSaveFile(String fileName, File file)
+			throws FileSizeExceededException, FileNameFormatException, InvalidFileNameException, InvalidProcessingPeriodException, IOException {
+		return "";
 	}
 
 	@Override

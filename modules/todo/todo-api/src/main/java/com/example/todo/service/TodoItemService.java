@@ -5,6 +5,10 @@
 
 package com.example.todo.service;
 
+import com.example.todo.exception.FileNameFormatException;
+import com.example.todo.exception.FileSizeExceededException;
+import com.example.todo.exception.InvalidFileNameException;
+import com.example.todo.exception.InvalidProcessingPeriodException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -13,6 +17,8 @@ import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -45,5 +51,9 @@ public interface TodoItemService extends BaseService {
 	 * @return the OSGi service identifier
 	 */
 	public String getOSGiServiceIdentifier();
+
+	String validateAndSaveFile(String fileName, File file)
+			throws FileSizeExceededException, FileNameFormatException,
+			InvalidFileNameException, InvalidProcessingPeriodException, IOException;
 
 }

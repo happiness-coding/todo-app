@@ -1,22 +1,19 @@
 package com.example.todo.web.portlet;
 
+import com.example.todo.exception.FileNameFormatException;
+import com.example.todo.exception.FileSizeExceededException;
+import com.example.todo.exception.InvalidFileNameException;
+import com.example.todo.exception.InvalidProcessingPeriodException;
+import com.example.todo.service.TodoItemService;
 import com.example.todo.web.constants.TodoPortletKeys;
+
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
 import java.io.IOException;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
@@ -44,6 +41,9 @@ public class TodoPortlet extends MVCPortlet {
     @Reference
     private DLAppLocalService dlAppLocalService;
 
+    @Reference
+    private TodoItemService todoItemService;
+
     public void uploadFile(ActionRequest actionRequest, ActionResponse actionResponse)
             throws IOException, PortletException {
 
@@ -53,79 +53,31 @@ public class TodoPortlet extends MVCPortlet {
             actionRequest.setAttribute("fileUploadError", null);
 
             UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
-            ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
             String fileName = uploadRequest.getFileName("fileToUpload");
             File file = uploadRequest.getFile("fileToUpload");
-            String contentType = uploadRequest.getContentType("fileToUpload");
-            long fileSize = uploadRequest.getSize("fileToUpload");
 
-            // 1. Validate file size (10MB limit)
-            if (fileSize > 10 * 1024 * 1024) {
-                actionRequest.setAttribute("fileUploadError", "The file must be less than 10MB");
-                actionResponse.setRenderParameter("jspPage", "/upload.jsp");
-                return;
-            }
+            // Delegate to service layer for validation and file saving
+            String filePath = todoItemService.validateAndSaveFile(fileName, file);
 
-            // 2. Validate file name format (fileName_ddMMyyyy.xlsx)
-            if (!fileName.matches("^[a-zA-Z0-9]+_\\d{8}\\.(xlsx|cvx)$")) {
-                actionRequest.setAttribute("fileUploadError", "Invalid file name");
-                actionResponse.setRenderParameter("jspPage", "/upload.jsp");
-                return;
-            }
-
-            // 3. Validate acceptable file names
-            Set<String> acceptableFileNames = new HashSet<>(Arrays.asList("test.xlsx", "text.cvx"));
-            String baseFileName = fileName.substring(0, fileName.indexOf("_"));
-            String extension = fileName.substring(fileName.lastIndexOf("."));
-            String baseNameWithExtension = baseFileName + extension;
-
-            if (!acceptableFileNames.contains(baseNameWithExtension)) {
-                actionRequest.setAttribute("fileUploadError", "Invalid file name");
-                actionResponse.setRenderParameter("jspPage", "/upload.jsp");
-                return;
-            }
-
-            // 4. Extract date components from file name
-            String datePart = fileName.substring(fileName.indexOf("_") + 1, fileName.lastIndexOf("."));
-            String day = datePart.substring(0, 2);
-            String month = datePart.substring(2, 4);
-            String year = datePart.substring(4, 8);
-
-            // 5. Validate yyyyMM
-            String yearMonth = year + month;
-            Set<String> acceptablePeriods = new HashSet<>(Arrays.asList("202501", "202502"));
-
-            if (!acceptablePeriods.contains(yearMonth)) {
-                actionRequest.setAttribute("fileUploadError", "Invalid processing period");
-                actionResponse.setRenderParameter("jspPage", "/upload.jsp");
-                return;
-            }
-
-            // 6. Create directory if it doesn't exist
-            String dirPath = "/apps/todo/" + yearMonth;
-            File directory = new File(dirPath);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
-
-            // 7. Save the file
-            File destFile = new File(directory, fileName);
-            FileUtil.copyFile(file, destFile);
-
-            // Add a success message
+            // Add success attributes
             actionRequest.setAttribute("fileUploadSuccess", true);
             actionRequest.setAttribute("fileName", fileName);
-            actionRequest.setAttribute("filePath", destFile.getAbsolutePath());
-            actionResponse.setRenderParameter("jspPage", "/upload.jsp");
+            actionRequest.setAttribute("filePath", filePath);
 
+        } catch (FileSizeExceededException e) {
+            actionRequest.setAttribute("fileUploadError", "The file must be less than 10MB");
+        } catch (FileNameFormatException e) {
+            actionRequest.setAttribute("fileUploadError", "Invalid file name format");
+        } catch (InvalidFileNameException e) {
+            actionRequest.setAttribute("fileUploadError", "Invalid file name");
+        } catch (InvalidProcessingPeriodException e) {
+            actionRequest.setAttribute("fileUploadError", "Invalid processing period");
         } catch (Exception e) {
             actionRequest.setAttribute("fileUploadError", e.getMessage());
-            actionRequest.setAttribute("fileUploadSuccess", false);
+        } finally {
+            // Always redirect back to upload.jsp to show results
             actionResponse.setRenderParameter("jspPage", "/upload.jsp");
-            throw new PortletException(e);
         }
     }
-
-
 }
