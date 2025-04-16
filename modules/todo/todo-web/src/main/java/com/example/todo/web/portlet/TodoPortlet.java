@@ -4,8 +4,10 @@ import com.example.todo.web.constants.TodoPortletKeys;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -54,19 +56,24 @@ public class TodoPortlet extends MVCPortlet {
             long folderId = 0; // Root folder
             String description = "Todo attachment";
 
+            // Create a ServiceContext object
+            ServiceContext serviceContext = new ServiceContext();
+            serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
+            serviceContext.setUserId(themeDisplay.getUserId());
+
             // Add the file to Document Library
             FileEntry fileEntry = dlAppLocalService.addFileEntry(
-                themeDisplay.getUserId(),
-                repositoryId,
-                folderId,
-                fileName,
-                contentType,
-                fileName,
-                description,
-                "",
-                file,
-                null);
-
+                    String.valueOf(themeDisplay.getUserId()),
+                    repositoryId,
+                    folderId,
+                    fileName,
+                    contentType,
+                    fileName,
+                    description,
+                    null,
+                    FileUtil.getBytes(file),
+                    null,
+                    serviceContext);
             // Add a success message
             actionRequest.setAttribute("fileUploadSuccess", true);
             actionRequest.setAttribute("fileEntryId", fileEntry.getFileEntryId());
@@ -76,4 +83,5 @@ public class TodoPortlet extends MVCPortlet {
             throw new PortletException(e);
         }
     }
+
 }
