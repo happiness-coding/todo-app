@@ -8,17 +8,18 @@
             <h3><liferay-ui:message key="upload-attachment" /></h3>
         </div>
         <div class="card-body">
-            <c:if test="${fileUploadSuccess}">
-                <div class="alert alert-success">
-                    <liferay-ui:message key="file-uploaded-successfully" />
-                </div>
-            </c:if>
-
-            <c:if test="${not empty fileUploadError}">
-                <div class="alert alert-danger">
-                    <liferay-ui:message key="error-uploading-file" />: ${fileUploadError}
-                </div>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty fileUploadError}">
+                    <div class="alert alert-danger">
+                        <liferay-ui:message key="error-uploading-file" />: ${fileUploadError}
+                    </div>
+                </c:when>
+                <c:when test="${fileUploadSuccess}">
+                    <div class="alert alert-success">
+                        <liferay-ui:message key="file-uploaded-successfully" />
+                    </div>
+                </c:when>
+            </c:choose>
 
             <aui:form action="<%= uploadFileURL %>" enctype="multipart/form-data" method="post">
                 <aui:fieldset>
