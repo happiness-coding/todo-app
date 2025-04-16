@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.4.0//EN" "<http://www.liferay.com/dtd/liferay-service-builder_7_4_0.dtd>">
+
+<service-builder dependency-injector="ds" package-path="com.example.todo">
+	<namespace>Todo</namespace>
+
+	<entity name="TodoItem" local-service="true" remote-service="true" uuid="true">
+		<!-- PK field -->
+		<column name="todoItemId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Business fields -->
+		<column name="title" type="String" />
+		<column name="description" type="String" />
+		<column name="dueDate" type="Date" />
+		<column name="completed" type="boolean" />
+		<column name="priority" type="int" />
+
+		<!-- Finder methods -->
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="G_U" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="userId" />
+		</finder>
+		<finder name="G_C" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="completed" />
+		</finder>
+	</entity>
+</service-builder>
