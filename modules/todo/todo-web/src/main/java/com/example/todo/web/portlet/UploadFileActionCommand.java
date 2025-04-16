@@ -1,17 +1,16 @@
 package com.example.todo.web.portlet;
 
-import com.example.todo.exception.FileNameFormatException;
-import com.example.todo.exception.FileSizeExceededException;
-import com.example.todo.exception.InvalidFileNameException;
-import com.example.todo.exception.InvalidProcessingPeriodException;
+import com.example.todo.exception.*;
 import com.example.todo.service.TodoItemService;
 import com.example.todo.web.constants.TodoPortletKeys;
 
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.File;
+import java.util.Locale;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
@@ -39,6 +38,7 @@ public class UploadFileActionCommand implements MVCActionCommand {
             // Clear any previous messages
             actionRequest.setAttribute("fileUploadSuccess", false);
             actionRequest.setAttribute("fileUploadError", null);
+            actionRequest.setAttribute("fileUploadErrorCode", null);
 
             UploadPortletRequest uploadRequest = PortalUtil.getUploadPortletRequest(actionRequest);
 
@@ -52,15 +52,16 @@ public class UploadFileActionCommand implements MVCActionCommand {
             actionRequest.setAttribute("fileUploadSuccess", true);
             actionRequest.setAttribute("fileName", fileName);
             actionRequest.setAttribute("filePath", filePath);
-        } catch (FileSizeExceededException e) {
-            actionRequest.setAttribute("fileUploadError", "The file must be less than 10MB");
-        } catch (FileNameFormatException e) {
-            actionRequest.setAttribute("fileUploadError", "Invalid file name format");
-        } catch (InvalidFileNameException e) {
-            actionRequest.setAttribute("fileUploadError", "Invalid file name");
-        } catch (InvalidProcessingPeriodException e) {
-            actionRequest.setAttribute("fileUploadError", "Invalid processing period");
+        } catch (TodoException e) {
+            // Get locale-specific error message from Language.properties
+            Locale locale = actionRequest.getLocale();
+            String localizedMessage = LanguageUtil.get(locale, e.getLanguageKey());
+
+            actionRequest.setAttribute("fileUploadErrorCode", e.getErrorCode());
+            actionRequest.setAttribute("fileUploadError", localizedMessage);
         } catch (Exception e) {
+            // Handle unexpected errors
+            actionRequest.setAttribute("fileUploadErrorCode", TodoErrorCodes.GENERAL_ERROR);
             actionRequest.setAttribute("fileUploadError", e.getMessage());
         } finally {
             // Always redirect back to upload.jsp to show results

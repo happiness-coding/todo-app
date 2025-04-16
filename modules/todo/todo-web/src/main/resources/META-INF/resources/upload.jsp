@@ -9,6 +9,12 @@
         </div>
         <div class="card-body">
             <c:choose>
+                <c:when test="${not empty fileUploadErrorCode}">
+                    <div class="alert alert-danger">
+                        <liferay-ui:message key="error-uploading-file" />:
+                        <liferay-ui:message key="error-${fn:toLowerCase(fileUploadErrorCode)}" />
+                    </div>
+                </c:when>
                 <c:when test="${not empty fileUploadError}">
                     <div class="alert alert-danger">
                         <liferay-ui:message key="error-uploading-file" />: ${fileUploadError}
