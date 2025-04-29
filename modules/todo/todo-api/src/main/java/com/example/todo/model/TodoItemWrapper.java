@@ -47,6 +47,7 @@ public class TodoItemWrapper
 		attributes.put("dueDate", getDueDate());
 		attributes.put("completed", isCompleted());
 		attributes.put("priority", getPriority());
+		attributes.put("isActive", isIsActive());
 
 		return attributes;
 	}
@@ -130,6 +131,12 @@ public class TodoItemWrapper
 		if (priority != null) {
 			setPriority(priority);
 		}
+
+		Boolean isActive = (Boolean)attributes.get("isActive");
+
+		if (isActive != null) {
+			setIsActive(isActive);
+		}
 	}
 
 	@Override
@@ -195,6 +202,16 @@ public class TodoItemWrapper
 	@Override
 	public long getGroupId() {
 		return model.getGroupId();
+	}
+
+	/**
+	 * Returns the is active of this todo item.
+	 *
+	 * @return the is active of this todo item
+	 */
+	@Override
+	public boolean getIsActive() {
+		return model.getIsActive();
 	}
 
 	/**
@@ -297,6 +314,16 @@ public class TodoItemWrapper
 		return model.isCompleted();
 	}
 
+	/**
+	 * Returns <code>true</code> if this todo item is is active.
+	 *
+	 * @return <code>true</code> if this todo item is is active; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isIsActive() {
+		return model.isIsActive();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -360,6 +387,16 @@ public class TodoItemWrapper
 	@Override
 	public void setGroupId(long groupId) {
 		model.setGroupId(groupId);
+	}
+
+	/**
+	 * Sets whether this todo item is is active.
+	 *
+	 * @param isActive the is active of this todo item
+	 */
+	@Override
+	public void setIsActive(boolean isActive) {
+		model.setIsActive(isActive);
 	}
 
 	/**

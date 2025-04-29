@@ -25,6 +25,34 @@ public class TodoItemServiceWrapper
 		_todoItemService = todoItemService;
 	}
 
+	@Override
+	public com.example.todo.model.TodoItem createTodoItem(
+			String title, String description, java.sql.Date dueDate,
+			int priority, long assigneeUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemService.createTodoItem(
+			title, description, dueDate, priority, assigneeUserId,
+			serviceContext);
+	}
+
+	@Override
+	public void deleteTodoItem(long todoItemId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_todoItemService.deleteTodoItem(todoItemId);
+	}
+
+	@Override
+	public com.example.todo.model.TodoItem getFirstTodoItemByTitleAndActive(
+			String title, boolean isActive)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemService.getFirstTodoItemByTitleAndActive(
+			title, isActive);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -33,6 +61,31 @@ public class TodoItemServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _todoItemService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.example.todo.model.TodoItem getTodoItem(long todoItemId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemService.getTodoItem(todoItemId);
+	}
+
+	@Override
+	public java.util.List<com.example.todo.model.TodoItem> getTodoItems() {
+		return _todoItemService.getTodoItems();
+	}
+
+	@Override
+	public com.example.todo.model.TodoItem updateTodoItem(
+			long todoItemId, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			boolean completed,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemService.updateTodoItem(
+			todoItemId, title, description, dueDate, priority, assigneeUserId,
+			completed, serviceContext);
 	}
 
 	@Override

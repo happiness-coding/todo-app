@@ -140,6 +140,8 @@ public class TodoItemPersistenceTest {
 
 		newTodoItem.setPriority(RandomTestUtil.nextInt());
 
+		newTodoItem.setIsActive(RandomTestUtil.randomBoolean());
+
 		_todoItems.add(_persistence.update(newTodoItem));
 
 		TodoItem existingTodoItem = _persistence.findByPrimaryKey(
@@ -173,6 +175,8 @@ public class TodoItemPersistenceTest {
 			existingTodoItem.isCompleted(), newTodoItem.isCompleted());
 		Assert.assertEquals(
 			existingTodoItem.getPriority(), newTodoItem.getPriority());
+		Assert.assertEquals(
+			existingTodoItem.isIsActive(), newTodoItem.isIsActive());
 	}
 
 	@Test
@@ -226,6 +230,16 @@ public class TodoItemPersistenceTest {
 	}
 
 	@Test
+	public void testCountByTitleActive() throws Exception {
+		_persistence.countByTitleActive("", RandomTestUtil.randomBoolean());
+
+		_persistence.countByTitleActive("null", RandomTestUtil.randomBoolean());
+
+		_persistence.countByTitleActive(
+			(String)null, RandomTestUtil.randomBoolean());
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		TodoItem newTodoItem = addTodoItem();
 
@@ -253,7 +267,8 @@ public class TodoItemPersistenceTest {
 			"Todo_TodoItem", "uuid", true, "todoItemId", true, "groupId", true,
 			"companyId", true, "userId", true, "userName", true, "createDate",
 			true, "modifiedDate", true, "title", true, "description", true,
-			"dueDate", true, "completed", true, "priority", true);
+			"dueDate", true, "completed", true, "priority", true, "isActive",
+			true);
 	}
 
 	@Test
@@ -553,6 +568,8 @@ public class TodoItemPersistenceTest {
 		todoItem.setCompleted(RandomTestUtil.randomBoolean());
 
 		todoItem.setPriority(RandomTestUtil.nextInt());
+
+		todoItem.setIsActive(RandomTestUtil.randomBoolean());
 
 		_todoItems.add(_persistence.update(todoItem));
 

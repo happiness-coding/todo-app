@@ -49,6 +49,8 @@ public class TodoItemTable extends BaseTable<TodoItemTable> {
 		"completed", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 	public final Column<TodoItemTable, Integer> priority = createColumn(
 		"priority", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
+	public final Column<TodoItemTable, Boolean> isActive = createColumn(
+		"isActive", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 
 	private TodoItemTable() {
 		super("Todo_TodoItem", TodoItemTable::new);

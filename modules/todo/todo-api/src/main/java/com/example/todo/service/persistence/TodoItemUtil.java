@@ -1050,6 +1050,191 @@ public class TodoItemUtil {
 	}
 
 	/**
+	 * Returns all the todo items where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @return the matching todo items
+	 */
+	public static List<TodoItem> findByTitleActive(
+		String title, boolean isActive) {
+
+		return getPersistence().findByTitleActive(title, isActive);
+	}
+
+	/**
+	 * Returns a range of all the todo items where title = &#63; and isActive = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TodoItemModelImpl</code>.
+	 * </p>
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param start the lower bound of the range of todo items
+	 * @param end the upper bound of the range of todo items (not inclusive)
+	 * @return the range of matching todo items
+	 */
+	public static List<TodoItem> findByTitleActive(
+		String title, boolean isActive, int start, int end) {
+
+		return getPersistence().findByTitleActive(title, isActive, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the todo items where title = &#63; and isActive = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TodoItemModelImpl</code>.
+	 * </p>
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param start the lower bound of the range of todo items
+	 * @param end the upper bound of the range of todo items (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching todo items
+	 */
+	public static List<TodoItem> findByTitleActive(
+		String title, boolean isActive, int start, int end,
+		OrderByComparator<TodoItem> orderByComparator) {
+
+		return getPersistence().findByTitleActive(
+			title, isActive, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the todo items where title = &#63; and isActive = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TodoItemModelImpl</code>.
+	 * </p>
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param start the lower bound of the range of todo items
+	 * @param end the upper bound of the range of todo items (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching todo items
+	 */
+	public static List<TodoItem> findByTitleActive(
+		String title, boolean isActive, int start, int end,
+		OrderByComparator<TodoItem> orderByComparator, boolean useFinderCache) {
+
+		return getPersistence().findByTitleActive(
+			title, isActive, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first todo item in the ordered set where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching todo item
+	 * @throws NoSuchItemException if a matching todo item could not be found
+	 */
+	public static TodoItem findByTitleActive_First(
+			String title, boolean isActive,
+			OrderByComparator<TodoItem> orderByComparator)
+		throws com.example.todo.exception.NoSuchItemException {
+
+		return getPersistence().findByTitleActive_First(
+			title, isActive, orderByComparator);
+	}
+
+	/**
+	 * Returns the first todo item in the ordered set where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching todo item, or <code>null</code> if a matching todo item could not be found
+	 */
+	public static TodoItem fetchByTitleActive_First(
+		String title, boolean isActive,
+		OrderByComparator<TodoItem> orderByComparator) {
+
+		return getPersistence().fetchByTitleActive_First(
+			title, isActive, orderByComparator);
+	}
+
+	/**
+	 * Returns the last todo item in the ordered set where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching todo item
+	 * @throws NoSuchItemException if a matching todo item could not be found
+	 */
+	public static TodoItem findByTitleActive_Last(
+			String title, boolean isActive,
+			OrderByComparator<TodoItem> orderByComparator)
+		throws com.example.todo.exception.NoSuchItemException {
+
+		return getPersistence().findByTitleActive_Last(
+			title, isActive, orderByComparator);
+	}
+
+	/**
+	 * Returns the last todo item in the ordered set where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching todo item, or <code>null</code> if a matching todo item could not be found
+	 */
+	public static TodoItem fetchByTitleActive_Last(
+		String title, boolean isActive,
+		OrderByComparator<TodoItem> orderByComparator) {
+
+		return getPersistence().fetchByTitleActive_Last(
+			title, isActive, orderByComparator);
+	}
+
+	/**
+	 * Returns the todo items before and after the current todo item in the ordered set where title = &#63; and isActive = &#63;.
+	 *
+	 * @param todoItemId the primary key of the current todo item
+	 * @param title the title
+	 * @param isActive the is active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next todo item
+	 * @throws NoSuchItemException if a todo item with the primary key could not be found
+	 */
+	public static TodoItem[] findByTitleActive_PrevAndNext(
+			long todoItemId, String title, boolean isActive,
+			OrderByComparator<TodoItem> orderByComparator)
+		throws com.example.todo.exception.NoSuchItemException {
+
+		return getPersistence().findByTitleActive_PrevAndNext(
+			todoItemId, title, isActive, orderByComparator);
+	}
+
+	/**
+	 * Removes all the todo items where title = &#63; and isActive = &#63; from the database.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 */
+	public static void removeByTitleActive(String title, boolean isActive) {
+		getPersistence().removeByTitleActive(title, isActive);
+	}
+
+	/**
+	 * Returns the number of todo items where title = &#63; and isActive = &#63;.
+	 *
+	 * @param title the title
+	 * @param isActive the is active
+	 * @return the number of matching todo items
+	 */
+	public static int countByTitleActive(String title, boolean isActive) {
+		return getPersistence().countByTitleActive(title, isActive);
+	}
+
+	/**
 	 * Caches the todo item in the entity cache if it is enabled.
 	 *
 	 * @param todoItem the todo item

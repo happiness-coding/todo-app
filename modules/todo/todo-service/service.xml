@@ -24,6 +24,8 @@
 		<column name="dueDate" type="Date" />
 		<column name="completed" type="boolean" />
 		<column name="priority" type="int" />
+		<column name="isActive" type="boolean" />
+
 
 		<!-- Finder methods -->
 		<finder name="GroupId" return-type="Collection">
@@ -36,6 +38,11 @@
 		<finder name="G_C" return-type="Collection">
 			<finder-column name="groupId" />
 			<finder-column name="completed" />
+		</finder>
+
+		<finder name="TitleActive" return-type="Collection">
+			<finder-column name="title" />
+			<finder-column name="isActive" />
 		</finder>
 	</entity>
 </service-builder>

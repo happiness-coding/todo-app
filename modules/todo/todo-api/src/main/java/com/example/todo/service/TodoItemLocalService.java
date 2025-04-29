@@ -5,6 +5,7 @@
 
 package com.example.todo.service;
 
+import com.example.todo.exception.NoSuchItemException;
 import com.example.todo.model.TodoItem;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -21,12 +22,15 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
+
+import java.sql.Date;
 
 import java.util.List;
 
@@ -55,6 +59,10 @@ public interface TodoItemLocalService
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.example.todo.service.impl.TodoItemLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the todo item local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link TodoItemLocalServiceUtil} if injection and service tracking are not available.
 	 */
+	public TodoItem addTodoItem(
+			long userId, String title, String description, Date dueDate,
+			int priority, long assigneeUserId, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	 * Adds the todo item to the database. Also notifies the appropriate model listeners.
@@ -211,6 +219,11 @@ public interface TodoItemLocalService
 		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TodoItem getFirstTodoItemByTitleAndActive(
+			String title, boolean isActive)
+		throws NoSuchItemException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
@@ -249,6 +262,9 @@ public interface TodoItemLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TodoItem getTodoItemByUuidAndGroupId(String uuid, long groupId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TodoItem> getTodoItems();
 
 	/**
 	 * Returns a range of all the todo items.
@@ -297,6 +313,12 @@ public interface TodoItemLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getTodoItemsCount();
+
+	public TodoItem updateTodoItem(
+			long userId, long todoItemId, String title, String description,
+			Date dueDate, int priority, long assigneeUserId, boolean completed,
+			ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	 * Updates the todo item in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

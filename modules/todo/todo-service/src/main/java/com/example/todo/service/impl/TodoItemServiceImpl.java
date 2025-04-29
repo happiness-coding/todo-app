@@ -4,16 +4,21 @@ import com.example.todo.exception.FileNameFormatException;
 import com.example.todo.exception.FileSizeExceededException;
 import com.example.todo.exception.InvalidFileNameException;
 import com.example.todo.exception.InvalidProcessingPeriodException;
+import com.example.todo.exception.NoSuchItemException;
 import com.example.todo.exception.ServiceUnavailableException;
 import com.example.todo.exception.TodoErrorCodes;
+import com.example.todo.exception.TodoValidationException;
 import com.example.todo.model.FileMetadata;
+import com.example.todo.model.TodoItem;
 import com.example.todo.service.base.TodoItemServiceBaseImpl;
 
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -24,9 +29,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -254,7 +261,7 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
      * Saves the file to the appropriate directory
      */
     private String saveFile(String fileName, File file, String yearMonth) throws IOException {
-        String dirPath = BASE_DIRECTORY + "/" +yearMonth;
+        String dirPath = BASE_DIRECTORY + "/" + fileName;
         File directory = new File(dirPath);
 
         if (!directory.exists()) {
@@ -301,4 +308,115 @@ public class TodoItemServiceImpl extends TodoItemServiceBaseImpl {
         String extension;
         String baseNameWithExtension;
     }
+
+    // Add to TodoItemServiceImpl.java
+
+    @Override
+    public List<TodoItem> getTodoItems() {
+        return todoItemLocalService.getTodoItems();
+    }
+
+    @Override
+    public TodoItem createTodoItem(String title, String description, Date dueDate, int priority,
+                                  long assigneeUserId, ServiceContext serviceContext) throws PortalException {
+
+
+        _log.info("Creating TodoItem: " + title);
+//        // Validate input
+//        if (Validator.isNull(title)) {
+//            throw new TodoValidationException("Title cannot be empty", TodoErrorCodes.INVALID_TITLE);
+//        }
+//
+//        if (dueDate != null && dueDate.before(new Date())) {
+//            throw new TodoValidationException("Due date cannot be in the past", TodoErrorCodes.INVALID_DUE_DATE);
+//        }
+//
+//        if (priority < 1 || priority > 5) {
+//            throw new TodoValidationException("Priority must be between 1 and 5", TodoErrorCodes.INVALID_PRIORITY);
+//        }
+//
+//        // Check if assignee exists if provided
+//        if (assigneeUserId > 0) {
+//            userLocalService.getUser(assigneeUserId);
+//        }
+
+        return todoItemLocalService.addTodoItem(
+            getUserId(),
+            title,
+            description,
+            dueDate,
+            priority,
+            assigneeUserId,
+            serviceContext
+        );
+    }
+
+    @Override
+    public TodoItem updateTodoItem(long todoItemId, String title, String description,
+                                  Date dueDate, int priority, long assigneeUserId,
+                                  boolean completed, ServiceContext serviceContext) throws PortalException {
+
+//        // Validate input (same as createTodoItem)
+//        if (Validator.isNull(title)) {
+//            throw new TodoValidationException("Title cannot be empty", TodoErrorCodes.INVALID_TITLE);
+//        }
+//
+//        if (dueDate != null && dueDate.before(new Date())) {
+//            throw new TodoValidationException("Due date cannot be in the past", TodoErrorCodes.INVALID_DUE_DATE);
+//        }
+//
+//        if (priority < 1 || priority > 5) {
+//            throw new TodoValidationException("Priority must be between 1 and 5", TodoErrorCodes.INVALID_PRIORITY);
+//        }
+//
+//        // Check if assignee exists if provided
+//        if (assigneeUserId > 0) {
+//            userLocalService.getUser(assigneeUserId);
+//        }
+//
+//        // Get the existing todo item
+//        TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
+//
+//        // Check permissions
+//        todoItemPermission.check(getPermissionChecker(), todoItem, ActionKeys.UPDATE);
+
+        return todoItemLocalService.updateTodoItem(
+            getUserId(),
+            todoItemId,
+            title,
+            description,
+            dueDate,
+            priority,
+            assigneeUserId,
+            completed,
+            serviceContext
+        );
+    }
+
+    @Override
+    public TodoItem getTodoItem(long todoItemId) throws PortalException {
+        TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
+//        todoItemPermission.check(getPermissionChecker(), todoItem, ActionKeys.VIEW);
+        return todoItem;
+    }
+
+    @Override
+    public void deleteTodoItem(long todoItemId) throws PortalException {
+        TodoItem todoItem = todoItemLocalService.getTodoItem(todoItemId);
+//        todoItemPermission.check(getPermissionChecker(), todoItem, ActionKeys.DELETE);
+        todoItemLocalService.deleteTodoItem(todoItemId);
+    }
+
+    @Override
+    public TodoItem getFirstTodoItemByTitleAndActive(String title, boolean isActive)
+            throws PortalException {
+
+        TodoItem todoItem = todoItemLocalService.getFirstTodoItemByTitleAndActive(title, isActive);
+
+        // Check permissions if needed
+        // todoItemPermission.check(getPermissionChecker(), todoItem, ActionKeys.VIEW);
+
+        return todoItem;
+    }
+
 }

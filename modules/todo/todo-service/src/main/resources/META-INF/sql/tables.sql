@@ -11,5 +11,6 @@ create table Todo_TodoItem (
 	description VARCHAR(75) null,
 	dueDate DATE null,
 	completed BOOLEAN,
-	priority INTEGER
+	priority INTEGER,
+	isActive BOOLEAN
 );

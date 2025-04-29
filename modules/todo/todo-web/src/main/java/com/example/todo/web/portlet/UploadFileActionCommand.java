@@ -32,8 +32,7 @@ public class UploadFileActionCommand implements MVCActionCommand {
     private TodoItemService todoItemService;
 
     @Override
-    public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse)
-            throws PortletException {
+    public boolean processAction(ActionRequest actionRequest, ActionResponse actionResponse) {
         try {
             // Clear any previous messages
             actionRequest.setAttribute("fileUploadSuccess", false);

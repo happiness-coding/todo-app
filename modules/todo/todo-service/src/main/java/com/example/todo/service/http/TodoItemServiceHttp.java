@@ -121,9 +121,266 @@ public class TodoItemServiceHttp {
 		}
 	}
 
+	public static java.util.List<com.example.todo.model.TodoItem> getTodoItems(
+		HttpPrincipal httpPrincipal) {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "getTodoItems",
+				_getTodoItemsParameterTypes12);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (java.util.List<com.example.todo.model.TodoItem>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.example.todo.model.TodoItem createTodoItem(
+			HttpPrincipal httpPrincipal, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "createTodoItem",
+				_createTodoItemParameterTypes13);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, title, description, dueDate, priority,
+				assigneeUserId, serviceContext);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.example.todo.model.TodoItem)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.example.todo.model.TodoItem updateTodoItem(
+			HttpPrincipal httpPrincipal, long todoItemId, String title,
+			String description, java.sql.Date dueDate, int priority,
+			long assigneeUserId, boolean completed,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "updateTodoItem",
+				_updateTodoItemParameterTypes14);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, todoItemId, title, description, dueDate, priority,
+				assigneeUserId, completed, serviceContext);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.example.todo.model.TodoItem)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.example.todo.model.TodoItem getTodoItem(
+			HttpPrincipal httpPrincipal, long todoItemId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "getTodoItem",
+				_getTodoItemParameterTypes15);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, todoItemId);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.example.todo.model.TodoItem)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static void deleteTodoItem(
+			HttpPrincipal httpPrincipal, long todoItemId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "deleteTodoItem",
+				_deleteTodoItemParameterTypes16);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, todoItemId);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.example.todo.model.TodoItem
+			getFirstTodoItemByTitleAndActive(
+				HttpPrincipal httpPrincipal, String title, boolean isActive)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				TodoItemServiceUtil.class, "getFirstTodoItemByTitleAndActive",
+				_getFirstTodoItemByTitleAndActiveParameterTypes17);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, title, isActive);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.example.todo.model.TodoItem)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(TodoItemServiceHttp.class);
 
 	private static final Class<?>[] _validateAndSaveFileParameterTypes0 =
 		new Class[] {String.class, java.io.File.class};
+	private static final Class<?>[] _getTodoItemsParameterTypes12 =
+		new Class[] {};
+	private static final Class<?>[] _createTodoItemParameterTypes13 =
+		new Class[] {
+			String.class, String.class, java.sql.Date.class, int.class,
+			long.class, com.liferay.portal.kernel.service.ServiceContext.class
+		};
+	private static final Class<?>[] _updateTodoItemParameterTypes14 =
+		new Class[] {
+			long.class, String.class, String.class, java.sql.Date.class,
+			int.class, long.class, boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
+		};
+	private static final Class<?>[] _getTodoItemParameterTypes15 = new Class[] {
+		long.class
+	};
+	private static final Class<?>[] _deleteTodoItemParameterTypes16 =
+		new Class[] {long.class};
+	private static final Class<?>[]
+		_getFirstTodoItemByTitleAndActiveParameterTypes17 = new Class[] {
+			String.class, boolean.class
+		};
 
 }

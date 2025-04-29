@@ -71,7 +71,7 @@ public class TodoItemModelImpl
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
 		{"title", Types.VARCHAR}, {"description", Types.VARCHAR},
 		{"dueDate", Types.TIMESTAMP}, {"completed", Types.BOOLEAN},
-		{"priority", Types.INTEGER}
+		{"priority", Types.INTEGER}, {"isActive", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,10 +91,11 @@ public class TodoItemModelImpl
 		TABLE_COLUMNS_MAP.put("dueDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("completed", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("priority", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("isActive", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table Todo_TodoItem (uuid_ VARCHAR(75) null,todoItemId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description VARCHAR(75) null,dueDate DATE null,completed BOOLEAN,priority INTEGER)";
+		"create table Todo_TodoItem (uuid_ VARCHAR(75) null,todoItemId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,title VARCHAR(75) null,description VARCHAR(75) null,dueDate DATE null,completed BOOLEAN,priority INTEGER,isActive BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table Todo_TodoItem";
 
@@ -132,20 +133,32 @@ public class TodoItemModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long USERID_COLUMN_BITMASK = 8L;
+	public static final long ISACTIVE_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long TITLE_COLUMN_BITMASK = 16L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long USERID_COLUMN_BITMASK = 32L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 64L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long TODOITEMID_COLUMN_BITMASK = 32L;
+	public static final long TODOITEMID_COLUMN_BITMASK = 128L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -269,6 +282,7 @@ public class TodoItemModelImpl
 			attributeGetterFunctions.put("dueDate", TodoItem::getDueDate);
 			attributeGetterFunctions.put("completed", TodoItem::getCompleted);
 			attributeGetterFunctions.put("priority", TodoItem::getPriority);
+			attributeGetterFunctions.put("isActive", TodoItem::getIsActive);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -319,6 +333,9 @@ public class TodoItemModelImpl
 			attributeSetterBiConsumers.put(
 				"priority",
 				(BiConsumer<TodoItem, Integer>)TodoItem::setPriority);
+			attributeSetterBiConsumers.put(
+				"isActive",
+				(BiConsumer<TodoItem, Boolean>)TodoItem::setIsActive);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -535,6 +552,15 @@ public class TodoItemModelImpl
 		_title = title;
 	}
 
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalTitle() {
+		return getColumnOriginalValue("title");
+	}
+
 	@JSON
 	@Override
 	public String getDescription() {
@@ -616,6 +642,37 @@ public class TodoItemModelImpl
 		_priority = priority;
 	}
 
+	@JSON
+	@Override
+	public boolean getIsActive() {
+		return _isActive;
+	}
+
+	@JSON
+	@Override
+	public boolean isIsActive() {
+		return _isActive;
+	}
+
+	@Override
+	public void setIsActive(boolean isActive) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_isActive = isActive;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalIsActive() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("isActive"));
+	}
+
 	@Override
 	public StagedModelType getStagedModelType() {
 		return new StagedModelType(
@@ -691,6 +748,7 @@ public class TodoItemModelImpl
 		todoItemImpl.setDueDate(getDueDate());
 		todoItemImpl.setCompleted(isCompleted());
 		todoItemImpl.setPriority(getPriority());
+		todoItemImpl.setIsActive(isIsActive());
 
 		todoItemImpl.resetOriginalValues();
 
@@ -722,6 +780,8 @@ public class TodoItemModelImpl
 			this.<Boolean>getColumnOriginalValue("completed"));
 		todoItemImpl.setPriority(
 			this.<Integer>getColumnOriginalValue("priority"));
+		todoItemImpl.setIsActive(
+			this.<Boolean>getColumnOriginalValue("isActive"));
 
 		return todoItemImpl;
 	}
@@ -870,6 +930,8 @@ public class TodoItemModelImpl
 
 		todoItemCacheModel.priority = getPriority();
 
+		todoItemCacheModel.isActive = isIsActive();
+
 		return todoItemCacheModel;
 	}
 
@@ -945,6 +1007,7 @@ public class TodoItemModelImpl
 	private Date _dueDate;
 	private boolean _completed;
 	private int _priority;
+	private boolean _isActive;
 
 	public <T> T getColumnValue(String columnName) {
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
@@ -989,6 +1052,7 @@ public class TodoItemModelImpl
 		_columnOriginalValues.put("dueDate", _dueDate);
 		_columnOriginalValues.put("completed", _completed);
 		_columnOriginalValues.put("priority", _priority);
+		_columnOriginalValues.put("isActive", _isActive);
 	}
 
 	private static final Map<String, String> _attributeNames;
@@ -1037,6 +1101,8 @@ public class TodoItemModelImpl
 		columnBitmasks.put("completed", 2048L);
 
 		columnBitmasks.put("priority", 4096L);
+
+		columnBitmasks.put("isActive", 8192L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

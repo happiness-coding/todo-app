@@ -28,6 +28,18 @@ public class TodoItemLocalServiceWrapper
 		_todoItemLocalService = todoItemLocalService;
 	}
 
+	@Override
+	public com.example.todo.model.TodoItem addTodoItem(
+			long userId, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemLocalService.addTodoItem(
+			userId, title, description, dueDate, priority, assigneeUserId,
+			serviceContext);
+	}
+
 	/**
 	 * Adds the todo item to the database. Also notifies the appropriate model listeners.
 	 *
@@ -253,6 +265,15 @@ public class TodoItemLocalServiceWrapper
 	}
 
 	@Override
+	public com.example.todo.model.TodoItem getFirstTodoItemByTitleAndActive(
+			String title, boolean isActive)
+		throws com.example.todo.exception.NoSuchItemException {
+
+		return _todoItemLocalService.getFirstTodoItemByTitleAndActive(
+			title, isActive);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
@@ -308,6 +329,11 @@ public class TodoItemLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _todoItemLocalService.getTodoItemByUuidAndGroupId(uuid, groupId);
+	}
+
+	@Override
+	public java.util.List<com.example.todo.model.TodoItem> getTodoItems() {
+		return _todoItemLocalService.getTodoItems();
 	}
 
 	/**
@@ -372,6 +398,19 @@ public class TodoItemLocalServiceWrapper
 	@Override
 	public int getTodoItemsCount() {
 		return _todoItemLocalService.getTodoItemsCount();
+	}
+
+	@Override
+	public com.example.todo.model.TodoItem updateTodoItem(
+			long userId, long todoItemId, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			boolean completed,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _todoItemLocalService.updateTodoItem(
+			userId, todoItemId, title, description, dueDate, priority,
+			assigneeUserId, completed, serviceContext);
 	}
 
 	/**

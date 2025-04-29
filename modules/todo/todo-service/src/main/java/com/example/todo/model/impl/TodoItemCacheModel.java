@@ -53,7 +53,7 @@ public class TodoItemCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -81,6 +81,8 @@ public class TodoItemCacheModel
 		sb.append(completed);
 		sb.append(", priority=");
 		sb.append(priority);
+		sb.append(", isActive=");
+		sb.append(isActive);
 		sb.append("}");
 
 		return sb.toString();
@@ -146,6 +148,7 @@ public class TodoItemCacheModel
 
 		todoItemImpl.setCompleted(completed);
 		todoItemImpl.setPriority(priority);
+		todoItemImpl.setIsActive(isActive);
 
 		todoItemImpl.resetOriginalValues();
 
@@ -173,6 +176,8 @@ public class TodoItemCacheModel
 		completed = objectInput.readBoolean();
 
 		priority = objectInput.readInt();
+
+		isActive = objectInput.readBoolean();
 	}
 
 	@Override
@@ -221,6 +226,8 @@ public class TodoItemCacheModel
 		objectOutput.writeBoolean(completed);
 
 		objectOutput.writeInt(priority);
+
+		objectOutput.writeBoolean(isActive);
 	}
 
 	public String uuid;
@@ -236,5 +243,6 @@ public class TodoItemCacheModel
 	public long dueDate;
 	public boolean completed;
 	public int priority;
+	public boolean isActive;
 
 }

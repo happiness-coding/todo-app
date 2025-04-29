@@ -37,6 +37,16 @@ public class TodoItemLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.example.todo.service.impl.TodoItemLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static TodoItem addTodoItem(
+			long userId, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().addTodoItem(
+			userId, title, description, dueDate, priority, assigneeUserId,
+			serviceContext);
+	}
 
 	/**
 	 * Adds the todo item to the database. Also notifies the appropriate model listeners.
@@ -229,6 +239,13 @@ public class TodoItemLocalServiceUtil {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
+	public static TodoItem getFirstTodoItemByTitleAndActive(
+			String title, boolean isActive)
+		throws com.example.todo.exception.NoSuchItemException {
+
+		return getService().getFirstTodoItemByTitleAndActive(title, isActive);
+	}
+
 	public static
 		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 			getIndexableActionableDynamicQuery() {
@@ -278,6 +295,10 @@ public class TodoItemLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getTodoItemByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static List<TodoItem> getTodoItems() {
+		return getService().getTodoItems();
 	}
 
 	/**
@@ -333,6 +354,18 @@ public class TodoItemLocalServiceUtil {
 	 */
 	public static int getTodoItemsCount() {
 		return getService().getTodoItemsCount();
+	}
+
+	public static TodoItem updateTodoItem(
+			long userId, long todoItemId, String title, String description,
+			java.sql.Date dueDate, int priority, long assigneeUserId,
+			boolean completed,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().updateTodoItem(
+			userId, todoItemId, title, description, dueDate, priority,
+			assigneeUserId, completed, serviceContext);
 	}
 
 	/**

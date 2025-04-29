@@ -15,5 +15,6 @@
 		<field name="dueDate" type="Date" />
 		<field name="completed" type="boolean" />
 		<field name="priority" type="int" />
+		<field name="isActive" type="boolean" />
 	</model>
 </model-hints>

@@ -274,6 +274,27 @@ public interface TodoItemModel
 	 */
 	public void setPriority(int priority);
 
+	/**
+	 * Returns the is active of this todo item.
+	 *
+	 * @return the is active of this todo item
+	 */
+	public boolean getIsActive();
+
+	/**
+	 * Returns <code>true</code> if this todo item is is active.
+	 *
+	 * @return <code>true</code> if this todo item is is active; <code>false</code> otherwise
+	 */
+	public boolean isIsActive();
+
+	/**
+	 * Sets whether this todo item is is active.
+	 *
+	 * @param isActive the is active of this todo item
+	 */
+	public void setIsActive(boolean isActive);
+
 	@Override
 	public TodoItem cloneWithOriginalValues();
 
